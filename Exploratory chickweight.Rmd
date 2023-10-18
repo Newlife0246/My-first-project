@@ -1,0 +1,83 @@
+---
+title: "Exploratory Analysis of Chickweight Data"
+author: "Daniel N Quansah"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+### load library
+
+```{r}
+library("tidyverse")
+```
+
+### load data and view dimensions
+```{r chickweight}
+data <- ChickWeight
+dim(data)
+
+head(data)
+```
+### compute the descriptives of the chickweight data
+```{r}
+summary(data)
+```
+
+
+### Aggregate the mean weight depending on the diet fed to chicks
+```{r}
+dw <- aggregate(weight~Diet, data, mean)
+dw
+```
+
+### plot the mean weight per diet
+```{r}
+ggplot(dw, aes(x=Diet, y=weight)) + geom_col(width = 0.75, fill="brown2")+
+  geom_text(label=round(dw$weight,2), size=4,vjust=-0.3)+
+  theme_minimal() + ggtitle("Mean chickweight Per Diet")
+```
+
+***which diet produced chicks with the highest weight?***
+
+### Compute the maximum weight per diet
+```{r}
+wd <- aggregate(weight~Diet, data, max)
+wd
+```
+
+### Generate a graphical representation of chicks with highest weight
+```{r}
+ggplot(wd, aes(Diet, weight)) + geom_col(fill="green4", width =0.85 )+theme_light()+
+  geom_text(label=wd$weight,size=4,vjust=-0.25)+
+  ggtitle("Maximum weight of chick per diet")
+```
+
+***How does the weight of chicks respond to time?***
+
+### Mean Chickweight computed over time 
+```{r}
+wt <- aggregate(weight~Time, data, mean)
+wt
+```
+### Plot of mean chickweight over time
+```{r}
+ggplot(wt, aes(x=Time, y=weight)) + geom_line(stat = "identity",inherit.aes = TRUE)+
+  theme_get()+geom_smooth(alpha=0.2, linewidth=1)+
+  ggtitle("Mean Growth trend of chicks over time")
+```
+
+***How does the weight of each diet change over time?***
+
+### Plot of Weight of each diet over the 21day time period
+```{r}
+aggregate(data$weight,by=list(time=data$Time,diet=data$Diet), FUN = mean)
+dt <- aggregate(weight~Diet+Time, data, mean)
+ggplot(dt, aes(x=Time, y=weight,colour=Diet)) + geom_line()+
+  theme_bw()+
+  geom_point(alpha=0.3)+
+  geom_smooth(alpha=0.2, linewidth=1)+
+  ggtitle("Weight over time per diet")
+```
+
+
+***This is my first rmarkdown document***
