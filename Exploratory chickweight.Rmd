@@ -2,7 +2,11 @@
 title: "Exploratory Analysis of Chickweight Data"
 author: "Daniel N Quansah"
 date: "`r Sys.Date()`"
-output: html_document
+output: 
+  html_document: 
+    theme: journal
+    highlight: espresso
+    toc: yes
 ---
 
 ### load library
@@ -77,6 +81,10 @@ ggplot(dt, aes(x=Time, y=weight,colour=Diet)) + geom_line()+
   geom_point(alpha=0.3)+
   geom_smooth(alpha=0.2, linewidth=1)+
   ggtitle("Weight over time per diet")
+```
+
+```{r}
+sessionInfo()
 ```
 
 
